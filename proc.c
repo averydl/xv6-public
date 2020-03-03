@@ -532,3 +532,36 @@ procdump(void)
     cprintf("\n");
   }
 }
+
+int getproccount(char* state)
+{
+  uint i = 8;
+  struct proc* p;
+  enum procstate target;
+
+  if(!strncmp(state, "UNUSED", i)) {
+    target = UNUSED;
+  } else if(!strncmp(state, "EMBRYO", i)) {
+    target = EMBRYO;
+  } else if(!strncmp(state, "SLEEPING", i)) {
+    target = SLEEPING;
+  } else if(!strncmp(state, "RUNNABLE", i)) {
+    target = RUNNABLE;
+  } else if(!strncmp(state, "RUNNING", i)) {
+    target = RUNNING;
+  } else if(!strncmp(state, "ZOMBIE", i)) {
+    target = ZOMBIE;
+  } else {
+    cprintf("The process state %s is not valid\n", state);
+    exit();
+  }
+
+
+  int count = 0;
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if(p->state == target)
+      count++;
+  }
+  return count;
+}
+

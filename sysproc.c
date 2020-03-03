@@ -93,5 +93,10 @@ sys_uptime(void)
 int
 sys_getprocs(void)
 {
-  return getprocs();
+  char* state;
+  if(argstr(0, &state) < 0) {
+    cprintf("Failed to read argument\n");
+    return -1;
+  }
+  return getproccount(state);
 }
